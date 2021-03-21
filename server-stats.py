@@ -16,14 +16,15 @@ from subprocess import check_output
 # ___________________VARIABLES___________________#
 # sys_disk = "/dev/mmcblk1p1"
 # eth_interface = "eth0"
+# com = "/dev/ttyUSB0"
 
 # Windows variables
 sys_disk = "C:/"
 eth_interface = "Ethernet"
+com = "COM20"
 # _______________________________________________#
 
-#target = serial.Serial('/dev/ttyUSB0', 9600)
-target = serial.Serial('COM20', 9600)
+target = serial.Serial(com, 9600)
 
 
 def run_cmd(cmd):
@@ -102,7 +103,7 @@ def host_ip():
 
 
 def get_data():
-    return {
+    data = {
         "hostname": str(hostaname()),
         "ip": str(host_ip()),
         "uptime": str(uptime()),
@@ -110,22 +111,21 @@ def get_data():
         "ram_percent": str(ram_percent()),
         "ram_total": str(ram_total()),
         "ram_used": str(ram_used()),
+        "sys_disk_total": str(sys_disk_total()),
         "sys_disk_free": str(sys_disk_free()),
         "up_from": str(up_from()),
         "net_in": str(net_in()),
         "net_out": str(net_out()),
     }
-
-
-data = json.dumps(get_data())
+    return json.dumps(data)
 
 
 def main():
     while True:
         print(datetime.datetime.now())
-        print(json.dumps(get_data()))
-        target.write(data.encode('ascii'))
-        time.sleep(1)
+        print(get_data().encode('ascii'))
+        target.write(get_data().encode('ascii'))
+        time.sleep(0.5)
 
 
 if __name__ == '__main__':
