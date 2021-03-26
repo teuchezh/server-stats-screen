@@ -1,8 +1,10 @@
 #include <Wire.h>
 #include <ArduinoJson.h>
 #include <LiquidCrystal_I2C.h>
+#include "GyverTimer.h"
 
 LiquidCrystal_I2C lcd(0x27, 20, 4);
+GTimer myTimer(MS);
 
 String inputString = "";
 boolean stringComplete = false;
@@ -49,6 +51,16 @@ byte disk[8] = {
     0x1F,
     0x1F};
 
+byte fdisk[] = {
+    0x1C,
+    0x12,
+    0x12,
+    0x12,
+    0x1C,
+    0x00,
+    0x1C,
+    0x1C};
+
 byte ram[] = {
     0x1C,
     0x14,
@@ -88,6 +100,17 @@ byte netdown[] = {
     0x1F,
     0x0E,
     0x04};
+
+byte ip[] = {
+    0x17,
+    0x15,
+    0x15,
+    0x17,
+    0x14,
+    0x14,
+    0x14,
+    0x00};
+
 void brknData()
 {
   lcd.clear();
@@ -99,8 +122,15 @@ void brknData()
 
 void setup()
 {
-  lcd.begin();
-  lcd.backlight();
+  myTimer.setTimeout(15000);
+      lcd.begin();
+
+  if (myTimer.isReady())
+  {
+    lcd.setBacklight(false);
+  };
+
+  lcd.setBacklight(false);
 
   Serial.begin(9600);
   while (!Serial)
@@ -114,6 +144,8 @@ void setup()
   lcd.createChar(5, cpu);
   lcd.createChar(6, netup);
   lcd.createChar(7, netdown);
+  lcd.createChar(9, fdisk);
+  lcd.createChar(10, ip);
 }
 
 void loop()
@@ -136,39 +168,42 @@ void loop()
     const char *ip = doc["ip"];
     const char *uptime = doc["uptime"];
 
-
-    lcd.clear();
+    // lcd.clear();
     lcd.setCursor(0, 0);
     lcd.write(3);
     lcd.setCursor(2, 0);
     lcd.print(sys_disk_total);
+
     lcd.setCursor(8, 0);
-    lcd.write(3);
+    lcd.write(9);
+    lcd.setCursor(10, 0);
     lcd.print(sys_disk_free);
+
     lcd.setCursor(0, 1);
     lcd.write(4);
     lcd.setCursor(2, 1);
     lcd.print(ram_percent);
+
     lcd.setCursor(8, 1);
     lcd.write(5);
     lcd.setCursor(10, 1);
     lcd.print(cpu_usage);
-    //lcd.setCursor(12,1);
-    //lcd.print(temp);
-    //lcd.setCursor(14,1);
-    //lcd.write(2);
 
     lcd.setCursor(0, 2);
     lcd.write(6);
     lcd.setCursor(2, 2);
-    lcd.print(net_in);
+    lcd.print(net_out);
+
     lcd.setCursor(8, 2);
     lcd.write(7);
-    lcd.setCursor(11, 2);
-    lcd.print(net_out);
+    lcd.setCursor(10, 2);
+    lcd.print(net_in);
+
     lcd.setCursor(0, 3);
+    lcd.write(10);
+    lcd.setCursor(2, 3);
     lcd.print(ip);
-    lcd.setCursor(12, 3);
-    lcd.print(uptime);
+    // lcd.setCursor(13, 3);
+    // lcd.print(uptime);
   }
 }
