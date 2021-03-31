@@ -23,9 +23,9 @@ At the moment, the output is implemented:
 
 ## Usage:  
 Before using, you need to set your data in the variables of the Python script:  
-1.1. The path to the system disk;  
+1. The path to the system disk;  
 1.2. Ethernet interface name;  
-1.3 COM port number;  
+1.3. COM port number;  
 2. Flash the Arduino / ESP with a sketch from the "display" folder;  
 
 ### ToDo:  
