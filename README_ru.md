@@ -1,6 +1,6 @@
 # Server stats screen  
 [![time tracker](https://wakatime.com/badge/github/teuchezh/server-stats-screen.svg)](https://wakatime.com/badge/github/teuchezh/server-stats-screen)  
-[Перейти на русский README](/README.md)  
+[Go to EN README](/README.md)  
 ##### (Представленные ниже изображения сделаны в процессе разработки, в конечном результате будет выглядеть иначе)  
 
 ## Что это такое?
