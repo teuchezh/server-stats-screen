@@ -1,5 +1,5 @@
-#!/usr/bin/python
-# -*- coding: utf-8 -*-
+#!/usr/bin/python3
+#-*- coding: utf-8 -*-
 
 import os
 import serial
@@ -14,18 +14,18 @@ from hurry.filesize import size
 from subprocess import check_output
 
 # ___________________VARIABLES___________________#
-# sys_disk = "/dev/mmcblk1p1"
-# eth_interface = "eth0"
-# com = "/dev/ttyUSB0"
+# Linux Variables
+sys_disk = "/dev/sda2"
+eth_interface = "enp1s0"
+com = "/dev/ttyUSB0"
 
 # Windows variables
-sys_disk = "C:/"
-eth_interface = "Ethernet"
-com = "COM20"
+#sys_disk = "C:/"
+#eth_interface = "Ethernet"
+#com = "COM20"
 # _______________________________________________#
 
-target = serial.Serial(com, 9600)
-
+#target = serial.Serial(com, 9600) #commented for developing
 
 def run_cmd(cmd):
     return check_output(cmd, shell=True).decode('utf-8')
@@ -124,7 +124,7 @@ def main():
     while True:
         print(datetime.datetime.now())
         print(get_data().encode('ascii'))
-        target.write(get_data().encode('ascii'))
+        #target.write(get_data().encode('ascii')) #commented for develop
         time.sleep(0.5)
 
 
